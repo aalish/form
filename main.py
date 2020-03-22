@@ -69,8 +69,20 @@ def edit(name):
     add(naam,age)
     delete(name)
 def view():
+    top=Toplevel()
+    top.title("View recruits info")
     df=pd.read_excel('demo.xlsx', index_col=0)
-    #print(df)
+    file = "demo.xlsx"
+    wb = load_workbook(file, data_only=True)
+    ws = wb.active
+
+    r= 1
+    for row in ws:
+        c = 1
+        for cell in row:
+            Label(top,text=cell.value).grid(row=r,column=c)
+            c+=1
+        r+=1
 
 
 #function for view button
@@ -100,7 +112,7 @@ contact_data=StringVar()
 search_data=StringVar()
 #buttons
 insert = Button(insert_frame, text="INSERT NEW RECRUITS",bg="#e4eded", fg="#063332",width=25, command=add)
-view = Button(view_frame, text="VIEW RECRUITS INFO", bg="#e4eded", fg="#063332",command=viewrec)
+view = Button(view_frame, text="VIEW RECRUITS INFO", bg="#e4eded", fg="#063332",command=view)
 search = Button(view_frame, text="SEARCH", bg="#e4eded", fg="#063332",command=search)
 #only for search
 search_e = Entry(view_frame, textvariable=search_data)
