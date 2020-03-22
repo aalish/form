@@ -44,9 +44,9 @@ def add():
 
 
     writer.close()
-    pop()
-def pop():
-     messagebox.showinfo("Data enetred","Entered value sucessfully")
+    pop("Data enetred","Entered value sucessfully")
+def pop(data1,data2):
+     messagebox.showinfo(data1,data2)
 #writer.close()
 def delete(val):
     df = pd.read_excel('demo.xlsx', index_col=[0])
@@ -56,12 +56,35 @@ def delete(val):
 
     #print("Deleted sucessfully")
 def search():
-    df = pd.read_excel('demo.xlsx', index_col=[0])
-    sear = df.loc[search_data.get()]
-    print(search_data.get())
-    print(sear)
-    open(sear)
+    try:
+        top=Toplevel()
+        top.title("View recruits info")
+        wb = load_workbook("demo.xlsx")
+        ws = wb.active
+        r = 1
+        d=0   
+        for row in ws.rows:
+            c = 1
+
+            if (row[0].value == "Name"):
+            
+                for cell in row:
+                    Label(top,text=cell.value).grid(row=r,column=c)
+                    c+=1
+                r+=1
+            if row[0].value == search_data.get():
+                for cell in row:
+                    Label(top,text=cell.value).grid(row=r,column=c)
+                    c+=1 
+                    d=1              
+                r+=1
+        print (d)
+        if d==0:
+            Label(top,text="Sorry No data available for that name.").grid(row=r,column=c)
+    except:
+        pop("Unable to find","Unable to retrieve data.")
 def open(value):
+
     top=Toplevel()
     top.title("View recruits info")
     Label(top,text=value).pack()
@@ -95,9 +118,9 @@ def view():
     top.title("View recruits info")'''
 
 
-def viewrec():
+'''def viewrec():
     df=pd.read_excel('demo.xlsx', index_col=0)
-    tkMessageBox.showinfo("Details", str(df))
+    tkMessageBox.showinfo("Details", str(df))'''
 
 name_data=StringVar()
 fathers_name_data=StringVar()
@@ -154,4 +177,3 @@ contact_e.grid(row=6, column=2, sticky="ew")
 
 
 root.mainloop()
-
