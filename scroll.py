@@ -24,17 +24,17 @@ root.geometry("%dx%d" %(width_value,height_value))'''
 
 
 def add():
-    if (not name_data.get) or (not age_data.get()) or (not address_data.get()) or (not contact_data.get()) or (not amount_data.get()):
-	    pop("Empty Field","All field are necessary")
+    if (not name_data.get()) or (not fathers_name_data.get()) or (not age_data.get()) or (not address_data.get()) or (not contact_data.get()) or (not amount_data.get()):
+        pop("Empty Field","All field are necessary")
     else:
         df = pd.DataFrame({'Name': [name_data.get()],
-    		"Father's Name":[fathers_name_data.get()],
-    		"GrandFather's Name":[grandfathers_name_data.get()],
-    		'Age': [age_data.get()],
-    		'Address':[address_data.get()],
-    		'Contact':[contact_data.get()],
-    		'Amount Paid':[amount_data.get()]
-    		})
+            "Father's Name":[fathers_name_data.get()],
+            "GrandFather's Name":[grandfathers_name_data.get()],
+            'Age': [age_data.get()],
+            'Address':[address_data.get()],
+            'Contact':[contact_data.get()],
+            'Amount Paid':[amount_data.get()]
+            })
         writer = pd.ExcelWriter('demo.xlsx', engine='openpyxl')
 # try to open an existing workbook
         writer.book = load_workbook('demo.xlsx')
