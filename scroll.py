@@ -24,27 +24,30 @@ root.geometry("%dx%d" %(width_value,height_value))'''
 
 
 def add():
-    df = pd.DataFrame({'Name': [name_data.get()],
-                    "Father's Name":[fathers_name_data.get()],
-                    "GrandFather's Name":[grandfathers_name_data.get()],
-                    'Age': [age_data.get()],
-                    'Address':[address_data.get()],
-                    'Contact':[contact_data.get()],
-                    'Amount Paid':[amount_data.get()]
-                })
-    writer = pd.ExcelWriter('demo.xlsx', engine='openpyxl')
+    if (not name_data.get) or (not age_data.get()) or (not address_data.get()) or (not contact_data.get()) or (not amount_data.get()):
+	    pop("Empty Field","All field are necessary")
+    else:
+        df = pd.DataFrame({'Name': [name_data.get()],
+    		"Father's Name":[fathers_name_data.get()],
+    		"GrandFather's Name":[grandfathers_name_data.get()],
+    		'Age': [age_data.get()],
+    		'Address':[address_data.get()],
+    		'Contact':[contact_data.get()],
+    		'Amount Paid':[amount_data.get()]
+    		})
+        writer = pd.ExcelWriter('demo.xlsx', engine='openpyxl')
 # try to open an existing workbook
-    writer.book = load_workbook('demo.xlsx')
+        writer.book = load_workbook('demo.xlsx')
 # copy existing sheets
-    writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
+        writer.sheets = dict((ws.title, ws) for ws in writer.book.worksheets)
 # read existing file
-    reader = pd.read_excel(r'demo.xlsx')
+        reader = pd.read_excel(r'demo.xlsx')
 # write out the new sheet
-    df.to_excel(writer,index=False,header=False,startrow=len(reader)+1)
+        df.to_excel(writer,index=False,header=False,startrow=len(reader)+1)
 
 
-    writer.close()
-    pop("Data enetred","Entered value sucessfully")
+        writer.close()
+        pop("Data enetred","Entered value sucessfully")
 def pop(data1,data2):
      messagebox.showinfo(data1,data2)
 #writer.close()
