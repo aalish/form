@@ -72,13 +72,12 @@ def search():
                     Label(top,text=cell.value).grid(row=r,column=c)
                     c+=1
                 r+=1
-            if row[0].value == search_data.get():
+            if row[0].value.lower() == search_data.get().lower():
                 for cell in row:
                     Label(top,text=cell.value).grid(row=r,column=c)
                     c+=1 
                     d=1              
                 r+=1
-        print (d)
         if d==0:
             Label(top,text="Sorry No data available for that name.").grid(row=r,column=c)
     except:
