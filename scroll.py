@@ -24,17 +24,18 @@ root.geometry("%dx%d" %(width_value,height_value))'''
 
 
 def add():
-    if (not name_data.get()) or (not fathers_name_data.get()) or (not age_data.get()) or (not address_data.get()) or (not contact_data.get()) or (not amount_data.get()):
-        pop("Empty Field","All field are necessary")
+    if (not name_data.get) or (not age_data.get()) or (not address_data.get()) or (not contact_data.get()) or (not amount_data.get()):
+	    pop("Empty Field","All field are necessary")
     else:
         df = pd.DataFrame({'Name': [name_data.get()],
-            "Father's Name":[fathers_name_data.get()],
-            "GrandFather's Name":[grandfathers_name_data.get()],
-            'Age': [age_data.get()],
-            'Address':[address_data.get()],
-            'Contact':[contact_data.get()],
-            'Amount Paid':[amount_data.get()]
-            })
+    		"Father's Name":[fathers_name_data.get()],
+    		"GrandFather's Name":[grandfathers_name_data.get()],
+    		'Age': [age_data.get()],
+    		'Address':[address_data.get()],
+    		'Contact':[contact_data.get()],
+    		'Amount Paid':[amount_data.get()],
+            'Month':[amount_data.get()]
+    		})
         writer = pd.ExcelWriter('demo.xlsx', engine='openpyxl')
 # try to open an existing workbook
         writer.book = load_workbook('demo.xlsx')
@@ -137,7 +138,9 @@ address_data=StringVar()
 contact_data=StringVar()
 search_data=StringVar()
 amount_data=StringVar()
+month = StringVar()
 
+#root.resizable(height=false,width =false)
 #buttons
 insert = Button(insert_frame, text="INSERT NEW RECRUITS",bg="#e4eded", fg="#063332",width=25, command=add)
 view = Button(view_frame, text="VIEW RECRUITS INFO", bg="#e4eded", fg="#063332",command=view)
@@ -168,7 +171,7 @@ grandfathers_name_e = Entry(insert_frame, textvariable=grandfathers_name_data,wi
 age_e = Entry(insert_frame, textvariable=age_data,width=25)
 address_e = Entry(insert_frame, textvariable=address_data,width=25)
 contact_e = Entry(insert_frame, textvariable=contact_data,width=25)
-amount_e = Entry(insert_frame, textvariable=amount_data,width=25)
+amount_e = Entry(insert_frame, textvariable=amount_data,width=12)
 
 
 name.grid(row=1, column=0)
@@ -184,7 +187,12 @@ address_e.grid(row=5, column=2, sticky="ew")
 contact.grid(row=6, column=0)
 contact_e.grid(row=6, column=2, sticky="ew")
 amount.grid(row=7, column=0)
-amount_e.grid(row=7, column=2, sticky="ew")
+amount_e.grid(row=7, column=2 , sticky = "w")
+list1= ['Baisakh','Jestha','Ashad','Shrawan','Bhadra','Ashwin','Kartik','Mangsir','Poush','Magh','Flagun','Chaitra']
+droplist = OptionMenu(insert_frame,month,*list1)
+droplist.config(width = 10)
+month.set('Baisakh')
+droplist.grid(row = 7,column =2, sticky= "e")
 
 
 
