@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np 
 from openpyxl import load_workbook
 from tkinter import *
+from tkinter import messagebox
 
 root = Tk()
 root.title("BRITISH ARMY TRAINING CENTER")
@@ -41,8 +42,11 @@ def add():
 # write out the new sheet
     df.to_excel(writer,index=False,header=False,startrow=len(reader)+1)
 
-    writer.close()
 
+    writer.close()
+    pop()
+def pop():
+     messagebox.showinfo("Data enetred","Entered value sucessfully")
 #writer.close()
 def delete(val):
     df = pd.read_excel('demo.xlsx', index_col=[0])
@@ -90,15 +94,7 @@ def view():
     top=Toplevel()
     top.title("View recruits info")'''
 
-#function for data input
-def data():
-    print(name_data.get())
-    print(fathers_name_data.get())
-    print(grandfathers_name_data.get())
-    print(age_data.get())
-    print(address_data.get())
-    print(contact_data.get())
-#pop up
+
 def viewrec():
     df=pd.read_excel('demo.xlsx', index_col=0)
     tkMessageBox.showinfo("Details", str(df))
