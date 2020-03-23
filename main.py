@@ -74,7 +74,7 @@ def search():
     desktop = desktop + "\\student\\" +search_data.get()+".png"
     print(desktop)
     print(type(desktop))
-    data1="Details about Roll No :" + search_data.get()
+    data1="Details about :" + search_data.get()
     Label(imagef1,text=data1).grid(row=0,column=0,sticky="ew",columnspan=3)
     for row in ws.rows:
         c = 1
@@ -84,7 +84,7 @@ def search():
                 val=Label(valueframe,text=cell.value).grid(row=c,column=r)
                 c+=1
             r+=1
-        if row[0].value.lower() == search_data.get().lower():
+        if (row[0].value.lower() == search_data.get().lower()) or (row[1].value.lower() == search_data.get().lower()):
             for cell in row:
                 val=Label(valueframe,text=cell.value).grid(row=c,column=r)
                 c+=1 
