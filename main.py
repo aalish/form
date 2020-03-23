@@ -16,7 +16,7 @@ image_frame=LabelFrame(insert_frame,bg="#DF0101",height=350,width=350)
 #packing frame items 
 insert_frame.grid( row=1, column= 0 ,padx=0, pady=1,sticky="w")
 view_frame.grid( row=0, column= 0,padx=5, pady=5)
-image_frame.grid(row=2,column=3,padx=1,pady=1,rowspan=5,sticky="w")
+image_frame.grid(row=2,column=3,padx=1,pady=1,rowspan=5,columnspan=2,sticky="w")
 
 #bg image
 bgimg= PhotoImage(file= r"photo.png")
@@ -110,6 +110,41 @@ def view():
 
 def update():
     pass
+def add_photo():
+    from tkinter import filedialog
+    import os
+    try:
+        if not rollnumber_data.get():
+            pop("Invalid","Enter roll number before selecting photo")
+        else:
+            rep = filedialog.askopenfilenames(
+                parent=root,
+                initialdir='/',
+                initialfile='tmp',
+                filetypes=[
+                    ("All files", "*"),
+                    ("PNG", "*.png"),
+                    ("JPEG", "*.jpg"),
+                    ("JPG","*.jpg")])
+            rep1 = ''.join(rep)
+    except IndexError:
+        pop("Filed","Failed to load photo.") 
+    add(str(rep1))
+def add(name):
+    try:
+
+        import os
+        import shutil
+        desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop') 
+        desktop = desktop + "\\student\\"
+        if not os.path.isdir(desktop):
+            os.mkdir(desktop)
+        desktop=desktop+str(rollnumber_data.get())+".png"
+    #os.rename(name, desktop)
+        shutil.copyfile(name, desktop)
+    #os.replace(name, desktop)
+    except:
+        pop("Failed","Failed to move photo")
 
 name_data=StringVar()
 fathers_name_data=StringVar()
@@ -120,8 +155,10 @@ contact_data=StringVar()
 search_data=StringVar()
 amount_data=StringVar()
 month = StringVar()
+rollnumber_data=StringVar()
 #root.resizable(height=false,width =false)
 #buttons
+add_photo = Button(insert_frame,text="Add Photo",bg="#e4eded",fg="#063332",command=add_photo)
 insert = Button(insert_frame, text="INSERT NEW RECRUITS",bg="#e4eded", fg="#063332",width=25, command=add)
 view = Button(view_frame, text="VIEW RECRUITS INFO", bg="#e4eded", fg="#063332",command=view)
 update = Button(view_frame, text="UPDATE RECRUITS INFO", bg="#e4eded", fg="#063332",command=update)
@@ -129,7 +166,7 @@ search = Button(view_frame, text="SEARCH", bg="#e4eded", fg="#063332",command=se
 #only for search
 search_e = Entry(view_frame, textvariable=search_data)
 search_e.grid(row=0, column=5)
-
+add_photo.grid(row=8,column=0)
 insert.grid( row=8, column= 2)
 view.grid( row=0, column= 2)
 update.grid( row=0, column= 3)
@@ -138,7 +175,7 @@ search.grid( row=0, column= 4)
 
 #insert labels 
 #root.wm_attributes('-transparentcolor','#8290bf')
-
+rollnumber = Label(insert_frame,text="Roll NO:", padx=2,pady=2,bg="#8290bf",fg="white")
 name = Label(insert_frame, text="Fullname :", padx=20, pady=20, bg="#8290bf",fg="white")
 fathers_name = Label(insert_frame, text="Father's name :", padx=20, pady=20, bg="#8290bf",fg="white")
 grandfathers_name = Label(insert_frame, text="Grandfather's name :", padx=20, pady=20, bg="#8290bf",fg="white")
@@ -148,6 +185,7 @@ contact = Label(insert_frame, text="Contact :", padx=20, pady=20, bg="#8290bf",f
 amount = Label(insert_frame, text="Amount Paid :", padx=20, pady=20, bg="#8290bf",fg="white")
 
 #entry
+rollnumber_e = Entry(insert_frame,textvariable=rollnumber_data,width=12)
 name_e = Entry(insert_frame, textvariable=name_data, width=25)
 fathers_name_e = Entry(insert_frame, textvariable=fathers_name_data, width=25)
 grandfathers_name_e = Entry(insert_frame, textvariable=grandfathers_name_data,width=25)
@@ -156,7 +194,8 @@ address_e = Entry(insert_frame, textvariable=address_data,width=25)
 contact_e = Entry(insert_frame, textvariable=contact_data,width=25)
 amount_e = Entry(insert_frame, textvariable=amount_data,width=12)
 
-
+rollnumber.grid(row=1,column=3,sticky="w")
+rollnumber_e.grid(row=1,column=4,sticky="w")
 name.grid(row=1, column=0)
 name_e.grid(row=1, column=2, sticky="ew")
 fathers_name.grid(row=2, column=0)
