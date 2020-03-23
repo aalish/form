@@ -22,19 +22,19 @@ image_frame.grid(row=2,column=3,padx=1,pady=1,rowspan=5,columnspan=2,sticky="w")
 bgimg= PhotoImage(file= r"photo.png")
 Label(image_frame, image=bgimg).place(relwidth=1,relheight=1)
 def add():
-    if (not name_data.get) or (not age_data.get()) or (not address_data.get()) or (not contact_data.get()) or (not amount_data.get()):
-	    pop("Empty Field","All field are necessary")
+    if (not name_data.get) or (not age_data.get()) or (not address_data.get()) or (not contact_data.get()) or (not amount_data.get()) or (not rollnumber_data.get()):
+        pop("Empty Field","All field are necessary")
     else:
         df = pd.DataFrame({'Roll No':[rollnumber_data.get()],
             'Name': [name_data.get()],
-    		"Father's Name":[fathers_name_data.get()],
-    		"GrandFather's Name":[grandfathers_name_data.get()],
-    		'Age': [age_data.get()],
-    		'Address':[address_data.get()],
-    		'Contact':[contact_data.get()],
-    		#'Amount Paid':[amount_data.get()],
+            "Father's Name":[fathers_name_data.get()],
+            "GrandFather's Name":[grandfathers_name_data.get()],
+            'Age': [age_data.get()],
+            'Address':[address_data.get()],
+            'Contact':[contact_data.get()],
+            #'Amount Paid':[amount_data.get()],
             #'Month':[amount_data.get()]
-    		})
+            })
         writer = pd.ExcelWriter('demo.xlsx', engine='openpyxl')
 # try to open an existing workbook
         writer.book = load_workbook('demo.xlsx')
