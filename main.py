@@ -5,7 +5,7 @@ from tkinter import *
 from tkinter import messagebox
 
 root = Tk()
-root.title("BRITISH ARMY TRAINING CENTER")
+root.title("GORKHA COMPANY TRAINING CENTER")
 root.configure(background="#b3c1f2")
 root.option_add( "*font", "Verdana  18" )  #setting default font and fontsize
 root.iconbitmap("bgphoto_icon.ico")
