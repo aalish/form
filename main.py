@@ -10,19 +10,17 @@ root.configure(background="#b3c1f2")
 root.option_add( "*font", "Verdana  18" )  #setting default font and fontsize
 root.iconbitmap("bgphoto_icon.ico")
 #making frame
-insert_frame= LabelFrame(root, padx=200,pady=50, bg="#8290bf")
+insert_frame= LabelFrame(root, padx=2,pady=5, bg="#8290bf")
 view_frame= LabelFrame(root, bg="#455959")
-
+image_frame=LabelFrame(insert_frame,bg="#DF0101",height=350,width=350)
 #packing frame items 
-insert_frame.grid( row=2, column= 0 ,padx=5, pady=5)
+insert_frame.grid( row=1, column= 0 ,padx=0, pady=1,sticky="w")
 view_frame.grid( row=0, column= 0,padx=5, pady=5)
+image_frame.grid(row=2,column=3,padx=1,pady=1,rowspan=5,sticky="w")
 
-#adding image
-image_frame= LabelFrame(view_frame)
-image_frame.grid( row=0, column= 0)
-bgimage=PhotoImage(file= r"bgphoto.png")
-Label(image_frame,image= bgimage).place(relwidth=1,relheight=1)
-
+#bg image
+bgimg= PhotoImage(file= r"photo.png")
+Label(image_frame, image=bgimg).place(relwidth=1,relheight=1)
 def add():
     if (not name_data.get) or (not age_data.get()) or (not address_data.get()) or (not contact_data.get()) or (not amount_data.get()):
 	    pop("Empty Field","All field are necessary")
@@ -139,6 +137,7 @@ search.grid( row=0, column= 4)
 
 
 #insert labels 
+#root.wm_attributes('-transparentcolor','#8290bf')
 
 name = Label(insert_frame, text="Fullname :", padx=20, pady=20, bg="#8290bf",fg="white")
 fathers_name = Label(insert_frame, text="Father's name :", padx=20, pady=20, bg="#8290bf",fg="white")
