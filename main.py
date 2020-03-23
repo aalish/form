@@ -25,14 +25,15 @@ def add():
     if (not name_data.get) or (not age_data.get()) or (not address_data.get()) or (not contact_data.get()) or (not amount_data.get()):
 	    pop("Empty Field","All field are necessary")
     else:
-        df = pd.DataFrame({'Name': [name_data.get()],
+        df = pd.DataFrame({'Roll No':[rollnumber_data.get()],
+            'Name': [name_data.get()],
     		"Father's Name":[fathers_name_data.get()],
     		"GrandFather's Name":[grandfathers_name_data.get()],
     		'Age': [age_data.get()],
     		'Address':[address_data.get()],
     		'Contact':[contact_data.get()],
-    		'Amount Paid':[amount_data.get()],
-            'Month':[amount_data.get()]
+    		#'Amount Paid':[amount_data.get()],
+            #'Month':[amount_data.get()]
     		})
         writer = pd.ExcelWriter('demo.xlsx', engine='openpyxl')
 # try to open an existing workbook
@@ -63,7 +64,7 @@ def search():
         d=0   
         for row in ws.rows:
             c = 1
-            if (row[0].value == "Name"):
+            if (row[0].value == "Roll No"):
             
                 for cell in row:
                     Label(top,text=cell.value).grid(row=r,column=c)
@@ -88,8 +89,8 @@ def open(value):
 def edit(name):
     naam=input('Enter name:\n')
     age=input('Enter age\n')
-    add(naam,age)
-    delete(name)
+    #add(naam,age)
+    #delete(name)
 def view():
     top=Toplevel()
     top.title("View recruits info")
@@ -129,8 +130,8 @@ def add_photo():
             rep1 = ''.join(rep)
     except IndexError:
         pop("Filed","Failed to load photo.") 
-    add(str(rep1))
-def add(name):
+    addp(str(rep1))
+def addp(name):
     try:
 
         import os
@@ -210,7 +211,7 @@ contact.grid(row=6, column=0)
 contact_e.grid(row=6, column=2, sticky="ew")
 amount.grid(row=7, column=0)
 amount_e.grid(row=7, column=2 , sticky = "w")
-list1= ['Baisakh','Jestha','Ashad','Shrawan','Bhadra','Ashwin','Kartik','Mangsir','Poush','Magh','Flagun','Chaitra']
+list1= ['Baisakh','Jestha','Ashad','Shrawan','Bhadra','Ashwin','Kartik','Mangsir','Poush','Magh','Falgun','Chaitra']
 droplist = OptionMenu(insert_frame,month,*list1)
 droplist.config(width = 10)
 month.set('Baisakh')
