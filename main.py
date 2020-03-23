@@ -55,42 +55,66 @@ def delete(val):
     df.to_excel("demo.xlsx")
     #print("Deleted sucessfully")
 def search():
-    try:
-        top=Toplevel()
-        top.title("View recruits info")
-        wb = load_workbook("demo.xlsx")
-        ws = wb.active
-        r = 1
-        d=0   
-        for row in ws.rows:
-            c = 1
-            if (row[0].value == "Roll No"):
+    #try:
+    from PIL import ImageTk, Image
+    top=Toplevel()
+    top.title("View recruits info")
+    wb = load_workbook("demo.xlsx")
+    #image for deatil
+    imagef1= LabelFrame(top,padx=200,pady=50,bg="#b3c1f2")
+    imagef1.grid(row=0,column=0,sticky="ew")
+    valueframe= LabelFrame(top,padx=200,pady=50,background="#b3c1f2")
+    valueframe.grid(row=1,column=0)
+    
+    ws = wb.active
+    r = 1
+    d=0  
+    import os
+    desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop') 
+    desktop = desktop + "\\student\\" +search_data.get()+".png"
+    print(desktop)
+    print(type(desktop))
+    data1="Details about Roll No :" + search_data.get()
+    Label(imagef1,text=data1).grid(row=0,column=0,sticky="ew",columnspan=3)
+    for row in ws.rows:
+        c = 1
+        if (row[0].value == "Roll No"):
             
-                for cell in row:
-                    Label(top,text=cell.value).grid(row=r,column=c)
-                    c+=1
-                r+=1
-            if row[0].value.lower() == search_data.get().lower():
-                for cell in row:
-                    Label(top,text=cell.value).grid(row=r,column=c)
-                    c+=1 
-                    d=1              
-                r+=1
-        if d==0:
-            Label(top,text="Sorry No data available for that name.").grid(row=r,column=c)
-    except:
-        pop("Unable to find","Unable to retrieve data.")
+            for cell in row:
+                val=Label(valueframe,text=cell.value).grid(row=c,column=r)
+                c+=1
+            r+=1
+        if row[0].value.lower() == search_data.get().lower():
+            for cell in row:
+                val=Label(valueframe,text=cell.value).grid(row=c,column=r)
+                c+=1 
+                d=1              
+            r+=1
+
+        #bg image
+    #bgimg= PhotoImage(file= desktop)
+    #
+    img = Image.open(desktop)
+    img = img.resize((250,250), Image.ANTIALIAS) 
+    img = ImageTk.PhotoImage(img)
+    panel =  Label(valueframe, image=img).grid(row=0,column=4,sticky="w",rowspan=7).place(relwidth=1,relheight=1)
+    #panel.image = img
+
+    if d==0:
+        Label(top,text="Sorry No data available for that name.").grid(row=r,column=c)
+    '''except:
+        pop("Unable to find","Unable to retrieve data.")'''
 def open(value):
     top=Toplevel()
     top.title("View recruits info")
     Label(top,text=value).pack()
     print(val)
     #print(sear)
-def edit(name):
+'''def edit(name):
     naam=input('Enter name:\n')
     age=input('Enter age\n')
     #add(naam,age)
-    #delete(name)
+    #delete(name)'''
 def view():
     top=Toplevel()
     top.title("View recruits info")
