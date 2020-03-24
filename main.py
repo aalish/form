@@ -40,8 +40,19 @@ def edit(name, col,val):
     ws.cell(row=r,column=c, value=val)
     wb.save(filename = 'demo.xlsx')
 def add():
+    data = pd.read_excel("demo.xlsx")
+    wb = load_workbook("demo.xlsx")
+    ws = wb.active
+    b=0
+    for row in ws.rows:
+        if (row[0].value.lower() == rollnumber_data.get().lower()):
+            b = 1
+            break
+
     if (not name_data.get) or (not age_data.get()) or (not address_data.get()) or (not contact_data.get()) or (not amount_data.get()) or (not rollnumber_data.get()):
         pop("Empty Field","All field are necessary")
+    elif b ==1:
+        pop("Invalid", "Same roll number have been useed.")
     else:
         df = pd.DataFrame({'Roll No':[rollnumber_data.get()],
             'Name': [name_data.get()],
@@ -201,16 +212,27 @@ def add_photo():
     addp(str(rep1))
 def addp(name):
     try:
+        data = pd.read_excel("demo.xlsx")
+        wb = load_workbook("demo.xlsx")
+        ws = wb.active
+        b=0
+        for row in ws.rows:
+            if (row[0].value.lower() == rollnumber_data.get().lower()):
+                b = 1
+                break
+        if (b ==1):
+            pop("Unable to add photo","Student data with that roll number exists.")
+        else:
 
-        import os
-        import shutil
-        desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop') 
-        desktop = desktop + "\\student\\"
-        if not os.path.isdir(desktop):
-            os.mkdir(desktop)
-        desktop=desktop+str(rollnumber_data.get())+".png"
+            import os
+            import shutil
+            desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop') 
+            desktop = desktop + "\\student\\"
+            if not os.path.isdir(desktop):
+                os.mkdir(desktop)
+            desktop=desktop+str(rollnumber_data.get())+".png"
     #os.rename(name, desktop)
-        shutil.copyfile(name, desktop)
+            shutil.copyfile(name, desktop)
     #os.replace(name, desktop)
     except:
         pop("Failed","Failed to move photo")
