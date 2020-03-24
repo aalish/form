@@ -206,12 +206,15 @@ def view():
 
     WB_PATH =os.getcwd() +"\demo.xlsx"
     WB_PATH=WB_PATH
-    print (WB_PATH)
+    #print (WB_PATH)
 # PDF path when saving
     #PATH_TO_PDF = r'C:\Users\Sandeep\Desktop\FoodBillingSystem_PYTHON\FoodBillingSystem_Py\demo6.pdf'
     PATH_TO_PDF = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop') 
-    PATH_TO_PDF = PATH_TO_PDF + "\\student\\demo6.pdf" 
-    print(PATH_TO_PDF)
+    PATH_TO_PDF = PATH_TO_PDF + "\\student\\" 
+    if not os.path.isdir(PATH_TO_PDF):
+        os.mkdir(PATH_TO_PDF)
+    #print(PATH_TO_PDF)
+    PATH_TO_PDF= PATH_TO_PDF +"demo6.pdf"
 
     excel = win32com.client.Dispatch("Excel.Application")
 
