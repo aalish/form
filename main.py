@@ -85,7 +85,7 @@ def search():
     imagef1.grid(row=0,column=0,sticky="ew")
     valueframe= LabelFrame(top,padx=200,pady=50,background="#b3c1f2")
     valueframe.grid(row=1,column=0)
-    
+    data = pd.read_excel("demo.xlsx")
     ws = wb.active
     r = 1
     d=0  
@@ -96,20 +96,43 @@ def search():
     print(type(desktop))
     data1="Details about :" + search_data.get()
     Label(imagef1,text=data1).grid(row=0,column=0,sticky="ew",columnspan=3)
+    colm=1
+    for colu in data.columns:
+        if colu == "Total":
+            break
+        colm+=1
+    print("Column = "+ str(colm))
+    r=0
+    i=1
     for row in ws.rows:
         c = 1
         if (row[0].value == "Roll No"):
-            
             for cell in row:
                 val=Label(valueframe,text=cell.value).grid(row=c,column=r)
                 c+=1
+                print(i)
+                if i == 7:
+                    print('break')
+                    break
+                i+=1
             r+=1
+            d1=ws.cell(row=r,column=colm)
+            d1=d1.value
+            val=Label(valueframe,text=d1).grid(row=c,column=r-1)
+            print (d1)
+        i=1
         if (row[0].value.lower() == search_data.get().lower()) or (row[1].value.lower() == search_data.get().lower()):
             for cell in row:
                 val=Label(valueframe,text=cell.value).grid(row=c,column=r)
                 c+=1 
-                d=1              
+                d=1
+                if i == 7:
+                    break
+                i+=1
             r+=1
+            d1=ws.cell(row=r,column=colm)
+            d1=d1.value
+            val=Label(valueframe,text=d1).grid(row=c,column=r-1)
 
         #bg image
     #bgimg= PhotoImage(file= desktop)
