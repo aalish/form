@@ -3,7 +3,8 @@ import numpy as np
 from openpyxl import load_workbook
 from tkinter import *
 from tkinter import messagebox
-
+import win32com.client
+import webbrowser
 root = Tk()
 root.title("GORKHA COMPANY TRAINING CENTER")
 root.configure(background="#b3c1f2")
@@ -23,22 +24,53 @@ bgimg= PhotoImage(file= r"photo.png")
 Label(image_frame, image=bgimg).place(relwidth=1,relheight=1)
 
 #edit certain cell
-def edit(name, col,val):
+def edit(name, col,val1,val2,named):
+    #print(name)
+    #print(col)
+    #print(val1)
+    #print(val2)
+    #print(named)
+    #print("Hello")
     data = pd.read_excel("demo.xlsx")
     wb = load_workbook("demo.xlsx")
     ws = wb.active
-    c=1
-    for colu in data.columns:
-        if colu == col:
-            break
-        c+=1
-    r=0
-    for row in ws.rows:
-        if (row[0].value.lower() == search_data.get().lower()) or (row[1].value.lower()== search_data.get().lower()):
-            break
-        r+=1
-    ws.cell(row=r,column=c, value=val)
-    wb.save(filename = 'demo.xlsx')
+    c1=1
+    c2=1
+    if (not val2):
+        #print("1 case")
+        for colu in data.columns:
+            if colu == col:
+                break
+            c1+=1
+        r=1
+        for row in ws.rows:
+            if (row[0].value.lower() == name.lower()) or (row[1].value.lower()== name.lower()):
+                break
+            r+=1
+        ws.cell(row=r,column=c1, value=float(val1))
+        wb.save(filename = 'demo.xlsx')
+    else:
+        #print("in here")
+        for colu in data.columns:
+            if colu == col:
+                break
+            c1+=1
+        col2="Contact"
+        for colu in data.columns:
+            if colu == col2:
+                break
+            c2+=1
+        r=1
+        for row in ws.rows:
+            if (row[0].value.lower() == name.lower()) and (row[1].value.lower()== named.lower()):
+                #print("here also")
+                break
+            r+=1
+        ws.cell(row=r,column=c1, value=float(val1))
+        ws.cell(row=r,column=c2, value=val2)
+        wb.save(filename='demo.xlsx')
+
+
 def add():
     data = pd.read_excel("demo.xlsx")
     wb = load_workbook("demo.xlsx")
@@ -61,8 +93,6 @@ def add():
             'Age': [age_data.get()],
             'Address':[address_data.get()],
             'Contact':[contact_data.get()],
-            #'Amount Paid':[amount_data.get()],
-            #'Month':[amount_data.get()]
             })
         writer = pd.ExcelWriter('demo.xlsx', engine='openpyxl')
 # try to open an existing workbook
@@ -74,7 +104,7 @@ def add():
 # write out the new sheet
         df.to_excel(writer,index=False,header=False,startrow=len(reader)+1)
         writer.close()
-        edit(name_data.get(),month.get(), amount_data.get())
+        edit(name=name_data.get(),col=month.get(), val1=amount_data.get(),val2="",named="")
 
         pop("Data enetred","Entered value sucessfully")
 def pop(data1,data2):
@@ -89,7 +119,10 @@ def search():
     #try:
     from PIL import ImageTk, Image
     top=Toplevel()
+
     top.title("View recruits info")
+    
+    top.iconbitmap("bgphoto_icon.ico")
     wb = load_workbook("demo.xlsx")
     #image for deatil
     imagef1= LabelFrame(top,padx=200,pady=50,bg="#b3c1f2")
@@ -107,7 +140,7 @@ def search():
     print(type(desktop))
     data1="Details about :" + search_data.get()
     Label(imagef1,text=data1).grid(row=0,column=0,sticky="ew",columnspan=3)
-    colm=1
+    colm=0
     for colu in data.columns:
         if colu == "Total":
             break
@@ -127,7 +160,7 @@ def search():
                     break
                 i+=1
             r+=1
-            d1=ws.cell(row=r,column=colm)
+            d1=ws.cell(row=1,column=colm)
             d1=d1.value
             val=Label(valueframe,text=d1).grid(row=c,column=r-1)
             print (d1)
@@ -144,6 +177,9 @@ def search():
             d1=ws.cell(row=r,column=colm)
             d1=d1.value
             val=Label(valueframe,text=d1).grid(row=c,column=r-1)
+        print(d)
+    if (d == 0):
+        val=Label(valueframe,text="No data Found.").grid(row=c,column=r)
 
         #bg image
     #bgimg= PhotoImage(file= desktop)
@@ -160,36 +196,89 @@ def search():
         pop("Unable to find","Unable to retrieve data.")'''
 def open(value):
     top=Toplevel()
+    top.iconbitmap("bgphoto_icon.ico")
     top.title("View recruits info")
     Label(top,text=value).pack()
     print(val)
 def view():
-    top=Toplevel()
-    top.title("View recruits info")
-    iframe=LabelFrame(top,padx=200, pady=200)
-    iframe.grid_rowconfigure(0, weight=1)
-    iframe.grid_columnconfigure(0, weight=1)
-    #making scrollbar-vertical
-    scrollbar = Scrollbar(iframe, orient = VERTICAL)
-    scrollbar.grid(row=0,column=1,sticky=N+S)
-    df=pd.read_excel('demo.xlsx', index_col=0)
-    file = "demo.xlsx"
-    wb = load_workbook(file, data_only=True)
-    ws = wb.active
-    r= 1
-    mylist=Listbox(top, yscrollcommand = scrollbar.set)
-    for row in ws:
-        c = 1
-        for cell in row:
-            mylist.insert(END,cell.value)
-            mylist=Listbox(top, yscrollcommand = scrollbar.set)
-            c+=1
-        r+=1
+# Path to original excel file
+    import os
 
-    scrollbar.config(command=mylist.yview)
+    WB_PATH =os.getcwd() +"\demo.xlsx"
+    WB_PATH=WB_PATH
+    print (WB_PATH)
+# PDF path when saving
+    #PATH_TO_PDF = r'C:\Users\Sandeep\Desktop\FoodBillingSystem_PYTHON\FoodBillingSystem_Py\demo6.pdf'
+    PATH_TO_PDF = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop') 
+    PATH_TO_PDF = PATH_TO_PDF + "\\student\\demo6.pdf" 
+    print(PATH_TO_PDF)
+
+    excel = win32com.client.Dispatch("Excel.Application")
+
+    excel.Visible = False
+    wb = excel.Workbooks.Open(WB_PATH)
+    
+    #try:
+    print('Start conversion to PDF')
+
+    # Open
+
+    # Specify the sheet you want to save by index. 1 is the first (leftmost) sheet.
+    ws_index_list = [1,2]
+    wb.WorkSheets(ws_index_list).Select()
+
+    # Save
+    wb.ActiveSheet.ExportAsFixedFormat(0, PATH_TO_PDF)
+    '''except:
+        print('failed.')'''
+    
+    webbrowser.open_new(PATH_TO_PDF)
+    print('Succeeded.')
+    
+        
+    wb.Close()
+    excel.Quit()
 
 def update():
-    pass
+    top=Toplevel()
+    top.title("Update transaction.")
+    top.iconbitmap("bgphoto_icon.ico")
+    top.configure(background="#8290bf")
+    #iframe=LabelFrame(top,padx=200,pady=200)
+
+    name1 = Label(top, text="Fullname :", padx=20, pady=20, bg="#8290bf",fg="white")
+    name_e1 = Entry(top, textvariable=name_data1, width=17)
+    name1.grid(row=0, column=0)
+    name_e1.grid(row=0, column=1, sticky="ew")
+    rollnumber1 = Label(top,text="Roll NO:", padx=20,pady=20,bg="#8290bf",fg="white")
+    rollnumber_e1= Entry(top,textvariable=rollnumber_data1,width=13)
+    rollnumber1.grid(row=0,column=2)
+    rollnumber_e1.grid(row=0,column=3)
+
+
+
+    #amount droplist
+    list11= ['Baisakh','Jestha','Ashad','Shrawan','Bhadra','Ashwin','Kartik','Mangsir','Poush','Magh','Falgun','Chaitra']
+    droplist1 = OptionMenu(top,month1,*list1)
+    droplist.config(width = 10)
+    month1.set('Baisakh')
+    droplist1.grid(row = 1,column =2, sticky= "e")
+    amount1 = Label(top, text="Amount Paid Now:", padx=20, pady=20, bg="#8290bf",fg="white")
+    amount_e1 = Entry(top, textvariable=amount_data1,width=12)
+    amount1.grid(row=1, column=0)
+    amount_e1.grid(row=1, column=1 , sticky = "w")
+    contact1 = Label(top,text="Contact number", padx=20,pady=20,bg="#8290bf",fg="white")
+    contact_e1= Entry(top,textvariable=contact_data1,width=17)
+    contact1.grid(row=2,column=0)
+    contact_e1.grid(row=2,column=1)
+    #button for update
+    update = Button(top, text="Update",bg="#e4eded", fg="#063332",width=25, command=call_edit)
+    update.grid(row=2,column=2)
+
+    #calling for edit
+def call_edit():
+    edit(name=rollnumber_data1.get(),col=month1.get(),val1=amount_data1.get(),val2=contact_data1.get(),named=name_data1.get())
+    pop("Sucessful","Updated sucessfully")
 def add_photo():
     from tkinter import filedialog
     import os
@@ -250,6 +339,12 @@ search_data=StringVar()
 amount_data=StringVar()
 month = StringVar()
 rollnumber_data=StringVar()
+#for edit
+name_data1= StringVar()
+rollnumber_data1=StringVar()
+contact_data1=StringVar()
+month1=StringVar()
+amount_data1=StringVar()
 #root.resizable(height=false,width =false)
 #buttons
 add_photo = Button(insert_frame,text="Add Photo",bg="#e4eded",fg="#063332",command=add_photo)
@@ -270,8 +365,8 @@ search.grid( row=0, column= 4)
 #insert labels 
 #root.wm_attributes('-transparentcolor','#8290bf')
 filedata = Label(insert_frame,text=" ", padx=2,pady=2)
-rollnumber = Label(insert_frame,text="Roll NO:", padx=2,pady=2,bg="#8290bf",fg="white")
 name = Label(insert_frame, text="Fullname :", padx=20, pady=20, bg="#8290bf",fg="white")
+rollnumber = Label(insert_frame,text="Roll NO:", padx=2,pady=2,bg="#8290bf",fg="white")
 fathers_name = Label(insert_frame, text="Father's name :", padx=20, pady=20, bg="#8290bf",fg="white")
 grandfathers_name = Label(insert_frame, text="Grandfather's name :", padx=20, pady=20, bg="#8290bf",fg="white")
 age = Label(insert_frame, text="Age :", padx=20, pady=20, bg="#8290bf",fg="white")
@@ -280,8 +375,9 @@ contact = Label(insert_frame, text="Contact :", padx=20, pady=20, bg="#8290bf",f
 amount = Label(insert_frame, text="Amount Paid :", padx=20, pady=20, bg="#8290bf",fg="white")
 
 #entry
-rollnumber_e = Entry(insert_frame,textvariable=rollnumber_data,width=12)
+
 name_e = Entry(insert_frame, textvariable=name_data, width=25)
+rollnumber_e = Entry(insert_frame,textvariable=rollnumber_data,width=12)
 fathers_name_e = Entry(insert_frame, textvariable=fathers_name_data, width=25)
 grandfathers_name_e = Entry(insert_frame, textvariable=grandfathers_name_data,width=25)
 age_e = Entry(insert_frame, textvariable=age_data,width=25)
