@@ -13,17 +13,46 @@ root.iconbitmap("bgphoto_icon.ico")
 insert_frame= LabelFrame(root, padx=2,pady=5, bg="#8290bf")
 view_frame= LabelFrame(root, bg="#455959")
 image_frame=LabelFrame(insert_frame,bg="#DF0101",height=350,width=350)
+
 #packing frame items 
 insert_frame.grid( row=1, column= 0 ,padx=0, pady=1,sticky="w")
 view_frame.grid( row=0, column= 0,padx=5, pady=5)
 image_frame.grid(row=2,column=3,padx=1,pady=1,rowspan=5,columnspan=2,sticky="w")
-
 #bg image
 bgimg= PhotoImage(file= r"photo.png")
 Label(image_frame, image=bgimg).place(relwidth=1,relheight=1)
+
+#edit certain cell
+def edit(name, col,val):
+    data = pd.read_excel("demo.xlsx")
+    wb = load_workbook("demo.xlsx")
+    ws = wb.active
+    c=1
+    for colu in data.columns:
+        if colu == col:
+            break
+        c+=1
+    r=0
+    for row in ws.rows:
+        if (row[0].value.lower() == search_data.get().lower()) or (row[1].value.lower()== search_data.get().lower()):
+            break
+        r+=1
+    ws.cell(row=r,column=c, value=val)
+    wb.save(filename = 'demo.xlsx')
 def add():
+    data = pd.read_excel("demo.xlsx")
+    wb = load_workbook("demo.xlsx")
+    ws = wb.active
+    b=0
+    for row in ws.rows:
+        if (row[0].value.lower() == rollnumber_data.get().lower()):
+            b = 1
+            break
+
     if (not name_data.get) or (not age_data.get()) or (not address_data.get()) or (not contact_data.get()) or (not amount_data.get()) or (not rollnumber_data.get()):
         pop("Empty Field","All field are necessary")
+    elif b ==1:
+        pop("Invalid", "Same roll number have been useed.")
     else:
         df = pd.DataFrame({'Roll No':[rollnumber_data.get()],
             'Name': [name_data.get()],
@@ -45,6 +74,8 @@ def add():
 # write out the new sheet
         df.to_excel(writer,index=False,header=False,startrow=len(reader)+1)
         writer.close()
+        edit(name_data.get(),month.get(), amount_data.get())
+
         pop("Data enetred","Entered value sucessfully")
 def pop(data1,data2):
      messagebox.showinfo(data1,data2)
@@ -65,7 +96,7 @@ def search():
     imagef1.grid(row=0,column=0,sticky="ew")
     valueframe= LabelFrame(top,padx=200,pady=50,background="#b3c1f2")
     valueframe.grid(row=1,column=0)
-    
+    data = pd.read_excel("demo.xlsx")
     ws = wb.active
     r = 1
     d=0  
@@ -76,20 +107,43 @@ def search():
     print(type(desktop))
     data1="Details about :" + search_data.get()
     Label(imagef1,text=data1).grid(row=0,column=0,sticky="ew",columnspan=3)
+    colm=1
+    for colu in data.columns:
+        if colu == "Total":
+            break
+        colm+=1
+    print("Column = "+ str(colm))
+    r=0
+    i=1
     for row in ws.rows:
         c = 1
         if (row[0].value == "Roll No"):
-            
             for cell in row:
                 val=Label(valueframe,text=cell.value).grid(row=c,column=r)
                 c+=1
+                print(i)
+                if i == 7:
+                    print('break')
+                    break
+                i+=1
             r+=1
+            d1=ws.cell(row=r,column=colm)
+            d1=d1.value
+            val=Label(valueframe,text=d1).grid(row=c,column=r-1)
+            print (d1)
+        i=1
         if (row[0].value.lower() == search_data.get().lower()) or (row[1].value.lower() == search_data.get().lower()):
             for cell in row:
                 val=Label(valueframe,text=cell.value).grid(row=c,column=r)
                 c+=1 
-                d=1              
+                d=1
+                if i == 7:
+                    break
+                i+=1
             r+=1
+            d1=ws.cell(row=r,column=colm)
+            d1=d1.value
+            val=Label(valueframe,text=d1).grid(row=c,column=r-1)
 
         #bg image
     #bgimg= PhotoImage(file= desktop)
@@ -109,29 +163,30 @@ def open(value):
     top.title("View recruits info")
     Label(top,text=value).pack()
     print(val)
-    #print(sear)
-'''def edit(name):
-    naam=input('Enter name:\n')
-    age=input('Enter age\n')
-    #add(naam,age)
-    #delete(name)'''
 def view():
     top=Toplevel()
     top.title("View recruits info")
+    iframe=LabelFrame(top,padx=200, pady=200)
+    iframe.grid_rowconfigure(0, weight=1)
+    iframe.grid_columnconfigure(0, weight=1)
     #making scrollbar-vertical
-    scrollbar = Scrollbar(top)
-    scrollbar.grid(column=4)
+    scrollbar = Scrollbar(iframe, orient = VERTICAL)
+    scrollbar.grid(row=0,column=1,sticky=N+S)
     df=pd.read_excel('demo.xlsx', index_col=0)
     file = "demo.xlsx"
     wb = load_workbook(file, data_only=True)
     ws = wb.active
     r= 1
+    mylist=Listbox(top, yscrollcommand = scrollbar.set)
     for row in ws:
         c = 1
         for cell in row:
-            Label(top,text=cell.value).grid(row=r,column=c)
+            mylist.insert(END,cell.value)
+            mylist=Listbox(top, yscrollcommand = scrollbar.set)
             c+=1
         r+=1
+
+    scrollbar.config(command=mylist.yview)
 
 def update():
     pass
@@ -155,18 +210,32 @@ def add_photo():
     except IndexError:
         pop("Filed","Failed to load photo.") 
     addp(str(rep1))
+    val=Label(filedata,text=rep1+ " moved to",font=("Helvetica", 7)).grid(row=0,column=0)
+
 def addp(name):
     try:
+        data = pd.read_excel("demo.xlsx")
+        wb = load_workbook("demo.xlsx")
+        ws = wb.active
+        b=0
+        for row in ws.rows:
+            if (row[0].value.lower() == rollnumber_data.get().lower()):
+                b = 1
+                break
+        if (b ==1):
+            pop("Unable to add photo","Student data with that roll number exists.")
+        else:
 
-        import os
-        import shutil
-        desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop') 
-        desktop = desktop + "\\student\\"
-        if not os.path.isdir(desktop):
-            os.mkdir(desktop)
-        desktop=desktop+str(rollnumber_data.get())+".png"
+            import os
+            import shutil
+            desktop = os.path.join(os.path.join(os.environ['USERPROFILE']), 'Desktop') 
+            desktop = desktop + "\\student\\"
+            if not os.path.isdir(desktop):
+                os.mkdir(desktop)
+            desktop=desktop+str(rollnumber_data.get())+".png"
     #os.rename(name, desktop)
-        shutil.copyfile(name, desktop)
+            shutil.copyfile(name, desktop)
+            val=Label(filedata,text=desktop,font=("Helvetica", 7)).grid(row=1,column=0)
     #os.replace(name, desktop)
     except:
         pop("Failed","Failed to move photo")
@@ -200,6 +269,7 @@ search.grid( row=0, column= 4)
 
 #insert labels 
 #root.wm_attributes('-transparentcolor','#8290bf')
+filedata = Label(insert_frame,text=" ", padx=2,pady=2)
 rollnumber = Label(insert_frame,text="Roll NO:", padx=2,pady=2,bg="#8290bf",fg="white")
 name = Label(insert_frame, text="Fullname :", padx=20, pady=20, bg="#8290bf",fg="white")
 fathers_name = Label(insert_frame, text="Father's name :", padx=20, pady=20, bg="#8290bf",fg="white")
@@ -219,6 +289,7 @@ address_e = Entry(insert_frame, textvariable=address_data,width=25)
 contact_e = Entry(insert_frame, textvariable=contact_data,width=25)
 amount_e = Entry(insert_frame, textvariable=amount_data,width=12)
 
+filedata.grid(row=9,column=0)
 rollnumber.grid(row=1,column=3,sticky="w")
 rollnumber_e.grid(row=1,column=4,sticky="w")
 name.grid(row=1, column=0)
