@@ -18,7 +18,7 @@ class School_Portal:
     db_name=db_name+"\\datas.db"
     def __init__(self, root):
         self.root = root
-        self.root.geometry('800x525+400+200')
+        self.root.geometry('800x600+400+150')
         self.root.title('GURKHA COMPANY TRAINING CENTER')
         self.root.iconbitmap("icon.ico")
 
@@ -78,7 +78,7 @@ class School_Portal:
         self.message.grid(row=9, column=1)
 
         '''Database Table display box '''
-        self.tree = ttk.Treeview(height=10, column=['', '', '', '', '', '','',''])
+        self.tree = ttk.Treeview( column=['', '', '', '', '', '',''])
         self.tree.grid(row=11, column=0, columnspan=4)
         self.tree.heading('#0', text='ID')
         self.tree.column('#0', width=50)
@@ -96,8 +96,11 @@ class School_Portal:
         self.tree.column('#6', width=120)
         self.tree.heading('#7', text='Amount Paid')
         self.tree.column('#7', width=120)
-        
 
+        #scrollbar adding to treeview
+        self.treeScrollbar=ttk.Scrollbar(orient="vertical", command=self.tree.yview)
+        self.tree.configure(yscroll=self.treeScrollbar.set)
+        self.treeScrollbar.grid(row=11,column=5,sticky="ns")
         '''Time and Date'''
         
         def tick():
