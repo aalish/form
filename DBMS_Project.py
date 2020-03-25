@@ -243,13 +243,15 @@ class School_Portal:
             self.message['text'] = 'Please select a Record to Edit!'
             return
 
-        fname = self.tree.item(self.tree.selection())['values'][0]
-        print(fname)
-        lname = self.tree.item(self.tree.selection())['values'][1]
-        uname = self.tree.item(self.tree.selection())['values'][2]
-        email = self.tree.item(self.tree.selection())['values'][3]
-        subject = self.tree.item(self.tree.selection())['values'][4]
-        age = self.tree.item(self.tree.selection())['values'][5]
+        fname = self.tree.item(self.tree.selection())['values'][0]  #fullname
+        father_name = self.tree.item(self.tree.selection())['values'][1]  #fathersname
+        grandfather_name = self.tree.item(self.tree.selection())['values'][2]  #gndfathers name
+        address = self.tree.item(self.tree.selection())['values'][3]  #address
+        age = self.tree.item(self.tree.selection())['values'][4]    #age 
+        contact = self.tree.item(self.tree.selection())['values'][5]    #contact
+        amt = self.tree.item(self.tree.selection())['values'][6]    #amount
+
+        print(fname,father_name,grandfather_name,address,age,contact,amt)
 
         self.edit_root = Toplevel()
         self.edit_root.title('Edit Record')
@@ -263,50 +265,57 @@ class School_Portal:
         new_fname.grid(row=1, column=2)
 
         Label(self.edit_root, text="Father's name (Old)").grid(row=2, column=1, sticky=W)
-        Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=lname), state='readonly').grid(row=2,
+        Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=father_name), state='readonly').grid(row=2,
                                                                                                           column=2)
         Label(self.edit_root, text="Father's name (New)").grid(row=3, column=1, sticky=W)
-        new_lname = Entry(self.edit_root,textvariable=StringVar(self.edit_root, value=lname))
-        new_lname.grid(row=3, column=2)
+        new_father_name = Entry(self.edit_root,textvariable=StringVar(self.edit_root, value=father_name))
+        new_father_name.grid(row=3, column=2)
 
         Label(self.edit_root, text="Grandfather's name (Old)").grid(row=4, column=1, sticky=W)
-        Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=uname), state='readonly').grid(row=4,
+        Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=grandfather_name), state='readonly').grid(row=4,
                                                                                                           column=2)
         Label(self.edit_root, text="Grandfather's name (New)").grid(row=5, column=1, sticky=W)
-        new_uname = Entry(self.edit_root,textvariable=StringVar(self.edit_root, value=uname))
-        new_uname.grid(row=5, column=2)
+        new_grandfather_name = Entry(self.edit_root,textvariable=StringVar(self.edit_root, value=grandfather_name))
+        new_grandfather_name.grid(row=5, column=2)
 
         Label(self.edit_root, text='Address (Old)').grid(row=6, column=1, sticky=W)
-        Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=email), state='readonly').grid(row=6,
+        Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=address), state='readonly').grid(row=6,
                                                                                                           column=2)
         Label(self.edit_root, text='Address (New)').grid(row=7, column=1, sticky=W)
-        new_email = Entry(self.edit_root,textvariable=StringVar(self.edit_root, value=email))
-        new_email.grid(row=7, column=2)
+        new_address = Entry(self.edit_root,textvariable=StringVar(self.edit_root, value=address))
+        new_address.grid(row=7, column=2)
 
         Label(self.edit_root, text='Age (Old)').grid(row=8, column=1, sticky=W)
-        Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=subject), state='readonly').grid(row=8,
+        Entry(self.edit_root, textvariable=IntVar(self.edit_root, value=age), state='readonly').grid(row=8,
                                                                                                             column=2)
         Label(self.edit_root, text='Age (New)').grid(row=9, column=1, sticky=W)
-        new_subject = Entry(self.edit_root,textvariable=StringVar(self.edit_root, value=subject))
-        new_subject.grid(row=9, column=2)
+        new_age = Entry(self.edit_root,textvariable=IntVar(self.edit_root, value=age))
+        new_age.grid(row=9, column=2)
 
         Label(self.edit_root, text='Contact (Old)').grid(row=10, column=1, sticky=W)
-        Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=age), state='readonly').grid(row=10,
+        Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=contact), state='readonly').grid(row=10,
                                                                                                         column=2)
         Label(self.edit_root, text='Contact (New)').grid(row=11, column=1, sticky=W)
-        new_age = Entry(self.edit_root,textvariable=StringVar(self.edit_root, value=age))
-        new_age.grid(row=11, column=2)
+        new_contact = Entry(self.edit_root,textvariable=StringVar(self.edit_root, value=contact))
+        new_contact.grid(row=11, column=2)
 
-        Button(self.edit_root, text='Save Changes', command=lambda: self.edit_record(new_fname.get(), fname, new_lname.get(), lname, new_uname.get(), uname, new_email.get(), email,new_subject.get(), subject, new_age.get(), age)).grid(row=12, column=2, sticky=W)
+        Label(self.edit_root, text='Amount Paid (Old)').grid(row=12, column=1, sticky=W)
+        Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=amt), state='readonly').grid(row=12,
+                                                                                                        column=2)
+        Label(self.edit_root, text='Amount Paid (New)').grid(row=13, column=1, sticky=W)
+        new_amt = Entry(self.edit_root,textvariable=StringVar(self.edit_root, value=amt))
+        new_amt.grid(row=13, column=2)
+
+        Button(self.edit_root, text='Save Changes', command=lambda: self.edit_record(new_fname.get(), fname, new_father_name.get(), father_name, new_grandfather_name.get(), grandfather_name, new_address.get(), address, new_age.get(), age, new_contact.get(), contact, new_amt.get(),amt)).grid(row=14, column=2, sticky=W)
 
         self.edit_root.mainloop()
 
-    def edit_record(self, new_fname, fname, new_lname, lname, new_uname, uname, new_email, email, new_subject, subject,
-                    new_age, age):
-        query = 'UPDATE studentlist SET Firstname=?, Lastname=?, Username=?, Email=?, Subject=?, Age=? WHERE ' \
-                'Firstname=? AND Lastname=? AND Username=? AND Email=? AND Subject=? AND Age=?'
+    def edit_record(self, new_fname, fname, new_father_name, father_name, new_grandfather_name, grandfather_name, new_address, address, new_age, age, new_contact, contact, new_amt, amt):
 
-        parameters = (new_fname, new_lname, new_uname, new_email, new_subject, new_age, fname, lname, uname, email,subject, age)
+        query = 'UPDATE studentlist SET Student_name=?, Student_Father_Name=?, Student_Grandfather_Name=?, Address=?, Age=?, Amount=?, Contact=? WHERE ' \
+                'Student_name=? AND Student_Father_Name=? AND Student_Grandfather_Name=? AND Address=? AND Age=? AND Amount=? AND Contact=?'
+
+        parameters = (new_fname, new_father_name, new_grandfather_name, new_address, new_age, new_contact,new_amt, fname, father_name, grandfather_name, address,age, contact, amt)
         self.run_query(query, parameters)
         self.edit_root.destroy()
         self.message['text'] = '{} details are changed to {}'.format(fname, new_fname)
