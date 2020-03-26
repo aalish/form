@@ -476,47 +476,48 @@ class School_Portal:
         self.edit_root = Toplevel()
         self.edit_root.title('Edit Record')
         self.edit_root.geometry('350x435+600+200')
+        
 
         Label(self.edit_root, text='Fullname (Old)').grid(row=0, column=1, sticky=W)
         Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=fname), state='readonly').grid(row=0,
                                                                                                           column=2)
         Label(self.edit_root, text='Fullname (New)').grid(row=1, column=1, sticky=W)
-        self.new_fname = Entry(self.edit_root)
+        self.new_fname = Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=fname))
         self.new_fname.grid(row=1, column=2,sticky=W)
 
         Label(self.edit_root, text="Father's name (Old)").grid(row=2, column=1, sticky=W)
         Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=father_name), state='readonly').grid(row=2,
                                                                                                           column=2)
         Label(self.edit_root, text="Father's name (New)").grid(row=3, column=1, sticky=W)
-        self.new_fathername = Entry(self.edit_root)
+        self.new_fathername = Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=father_name))
         self.new_fathername.grid(row=3, column=2,sticky=W)
 
         Label(self.edit_root, text="Grandfather's name (Old)").grid(row=4, column=1, sticky=W)
         Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=grandfather_name), state='readonly').grid(row=4,
                                                                                                           column=2)
         Label(self.edit_root, text="Grandfather's name (New)").grid(row=5, column=1, sticky=W)
-        self.new_grandfathername = Entry(self.edit_root)
+        self.new_grandfathername = Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=grandfather_name))
         self.new_grandfathername.grid(row=5, column=2,sticky=W)
 
         Label(self.edit_root, text='Address (Old)').grid(row=6, column=1, sticky=W)
         Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=address), state='readonly').grid(row=6,
                                                                                                           column=2)
         Label(self.edit_root, text='Address (New)').grid(row=7, column=1, sticky=W)
-        self.new_address = Entry(self.edit_root)
+        self.new_address = Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=address))
         self.new_address.grid(row=7, column=2)
 
         Label(self.edit_root, text='Age (Old)').grid(row=10, column=1, sticky=W)
         Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=age), state='readonly').grid(row=10,
                                                                                                         column=2)
         Label(self.edit_root, text='Age (New)').grid(row=11, column=1, sticky=W)
-        self.new_age = Entry(self.edit_root)
+        self.new_age = Entry(self.edit_root,textvariable=StringVar(self.edit_root, value=age))
         self.new_age.grid(row=11, column=2, sticky=W)
 
         Label(self.edit_root, text='Contact (Old)').grid(row=12, column=1, sticky=W)
         Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=contact), state='readonly').grid(row=12,
                                                                                                         column=2)
         Label(self.edit_root, text='Contact (New)').grid(row=13, column=1, sticky=W)
-        self.new_contact = Entry(self.edit_root)
+        self.new_contact = Entry(self.edit_root, textvariable=StringVar(self.edit_root, value=contact))
         self.new_contact.grid(row=13, column=2,sticky=W)
 
 
