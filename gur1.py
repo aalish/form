@@ -188,7 +188,7 @@ class School_Portal:
             print("data is ")
             print(dat)
             q2= 'UPDATE month SET {0} = ? WHERE Roll_number = ?'.format(mon)
-            p2=(stu_amount,dat1)
+            p2=(dat,dat1)
             cursor.execute(q2,p2)
             conn.commit()
             self.return_row(dat1)
