@@ -235,11 +235,11 @@ class School_Portal:
             conn.commit()
 #Check if same month have previous data for money and send previous data
     def return_sum(self,stu_name,stu_fname,stu_gfname,stu_add,stu_age,stu_contact,stu_amount,mon):
-     	q='SELECT  Roll_number FROM studentlist WHERE Student_Name=? AND Student_Father_Name=? AND Student_Grandfather_Name=? AND Address=? AND Age=? AND Contact=?'
-     	p=(stu_name,stu_fname,stu_gfname,stu_add,stu_age,stu_contact)
-     	print("koko")
-     	print(stu_name,stu_fname,stu_gfname,stu_add,stu_age,stu_contact)
-     	with sqlite3.connect(self.db_name) as conn:
+        q='SELECT  Roll_number FROM studentlist WHERE Student_Name=? AND Student_Father_Name=? AND Student_Grandfather_Name=? AND Address=? AND Age=? AND Contact=?'
+        p=(stu_name,stu_fname,stu_gfname,stu_add,stu_age,stu_contact)
+        print("koko")
+        print(stu_name,stu_fname,stu_gfname,stu_add,stu_age,stu_contact)
+        with sqlite3.connect(self.db_name) as conn:
             cursor = conn.cursor()
             cursor.execute(q,p)
             name=cursor.fetchall()
@@ -259,7 +259,7 @@ class School_Portal:
             dat=out[0]
             print("Here is dat"+str(dat1))
             if dat is None:
-            	dat=0
+                dat=0
             print(dat)
             print("Here amount is "+str(stu_amount))
             dat=dat+int(stu_amount)
@@ -350,6 +350,7 @@ class School_Portal:
                 #print (i)
             #print("HI"+str(totaln)) 
             cursor.execute('UPDATE month SET Total = ? WHERE Roll_number = ?',(totaln,id,))
+            cursor.execute('UPDATE studentlist SET Amount = ? WHERE Roll_number = ?',(totaln,id,))
             cursor=conn.commit()
             #print(res) 
             #self.show(self.username.get())
@@ -542,19 +543,19 @@ class School_Portal:
 
     def edit_record(self, new_fname, fname, new_father_name, father_name, new_grandfather_name, grandfather_name, new_address, address, new_age, age,
                     new_contact, contact,new_amount,amount):
-    	#print(fname,lname,uname,email,subject,age,amt,new_finame,new_fatname,new_gfname,new_add,new_cont,new_ag,new_amt,self.test12.get())
-    #	print(new_amt)
+        #print(fname,lname,uname,email,subject,age,amt,new_finame,new_fatname,new_gfname,new_add,new_cont,new_ag,new_amt,self.test12.get())
+    #   print(new_amt)
 
-    	query = 'UPDATE studentlist SET Student_Name=?, Student_Father_Name=?, Student_Grandfather_Name=?, Address=?, Age=?,  Contact=? WHERE Student_Name=? AND Student_Father_Name=? AND Student_Grandfather_Name=? AND Address=? AND Age=? AND CONTACT=?'
-    	parameters = (new_fname, new_father_name, new_grandfather_name, new_address, new_age ,new_contact, fname, father_name, grandfather_name , address,age,contact)
-    	self.run_query(query, parameters)
-    	print("Hi")
-    	print(self.test12.get())
-    	#getting va;ue about  that money previously
-    	value=self.return_sum(new_fname, new_father_name, new_grandfather_name, new_address, new_age,new_contact,new_amount,self.test12.get())
-    	self.edit_root.destroy()
-    	self.message['text'] = '{} details are changed to {}'.format(fname, new_fname)
-    	self.veiwing_records()
+        query = 'UPDATE studentlist SET Student_Name=?, Student_Father_Name=?, Student_Grandfather_Name=?, Address=?, Age=?,  Contact=? WHERE Student_Name=? AND Student_Father_Name=? AND Student_Grandfather_Name=? AND Address=? AND Age=? AND CONTACT=?'
+        parameters = (new_fname, new_father_name, new_grandfather_name, new_address, new_age ,new_contact, fname, father_name, grandfather_name , address,age,contact)
+        self.run_query(query, parameters)
+        print("Hi")
+        print(self.test12.get())
+        #getting va;ue about  that money previously
+        value=self.return_sum(new_fname, new_father_name, new_grandfather_name, new_address, new_age,new_contact,new_amount,self.test12.get())
+        self.edit_root.destroy()
+        self.message['text'] = '{} details are changed to {}'.format(fname, new_fname)
+        self.veiwing_records()
 
 
     def edit(self):
