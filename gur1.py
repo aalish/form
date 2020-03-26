@@ -155,7 +155,44 @@ class School_Portal:
         root.config(menu=Chooser)
         self.veiwing_records()
 
-  
+#Check if same month have previous data for money and send previous data
+    def return_sum(self,stu_name,stu_fname,stu_gfname,stu_add,stu_age,stu_amount,mon):
+     	q='SELECT  Roll_number FROM studentlist WHERE Student_Name=? AND Student_Father_Name=? AND Student_Grandfather_Name=? AND Address=? AND Age=?'
+     	p=(stu_name,stu_fname,stu_gfname,stu_add,stu_age)
+     	print("koko")
+     	print(stu_name,stu_fname,stu_gfname,stu_add,stu_age,)
+     	with sqlite3.connect(self.db_name) as conn:
+            cursor = conn.cursor()
+            cursor.execute(q,p)
+            name=cursor.fetchall()
+            print("HELL")
+            print(name)
+            out = [item for t in name for item in t] 
+            print(out)
+            dat1=out[0]
+            #print(dat)
+            print("hok")
+            print(mon)
+            q1='SELECT  '+ mon +' FROM month WHERE Roll_number=?'
+            p1=(dat1,)
+            cursor.execute(q1,p1)
+            name=cursor.fetchall()
+            out = [item for t in name for item in t]
+            dat=out[0]
+            print("Here is dat"+str(dat1))
+            if dat is None:
+            	dat=0
+            print(dat)
+            print("Here amount is "+str(stu_amount))
+            dat=dat+int(stu_amount)
+            print("data is ")
+            print(dat)
+            q2= 'UPDATE month SET {0} = ? WHERE Roll_number = ?'.format(mon)
+            p2=(stu_amount,dat1)
+            cursor.execute(q2,p2)
+            conn.commit()
+            self.return_row(dat1)
+        	
 
     ''' View Database Table'''
     def addp(self,name):
@@ -448,9 +485,12 @@ class School_Portal:
     	self.run_query(query, parameters)
     	print("Hi")
     	print(self.test12.get())
+    	#getting va;ue about  that money previously
+    	value=self.return_sum(new_finame, new_fatname, new_gfname, new_add, new_ag,new_amt,self.test12.get())
     	self.edit_root.destroy()
     	self.message['text'] = '{} details are changed to {}'.format(fname, new_finame)
     	self.veiwing_records()
+
 
     def edit(self):
         ed = tkinter.messagebox.askquestion('Edit Record', 'Want to Edit this Record?')
