@@ -239,38 +239,40 @@ class School_Portal:
         p=(stu_name,stu_fname,stu_gfname,stu_add,stu_age,stu_contact)
         print("koko")
         print(stu_name,stu_fname,stu_gfname,stu_add,stu_age,stu_contact)
-        with sqlite3.connect(self.db_name) as conn:
-            cursor = conn.cursor()
-            cursor.execute(q,p)
-            name=cursor.fetchall()
-            print("HELL")
-            print(name)
-            out = [item for t in name for item in t] 
-            print(out)
-            dat1=out[0]
+        try:
+            with sqlite3.connect(self.db_name) as conn:
+                cursor = conn.cursor()
+                cursor.execute(q,p)
+                name=cursor.fetchall()
+                print("HELL")
+                print(name)
+                out = [item for t in name for item in t] 
+                print(out)
+                dat1=out[0]
             #print(dat)
-            print("hok")
-            print(mon)
-            q1='SELECT  '+ mon +' FROM month WHERE Roll_number=?'
-            p1=(dat1,)
-            cursor.execute(q1,p1)
-            name=cursor.fetchall()
-            out = [item for t in name for item in t]
-            dat=out[0]
-            print("Here is dat"+str(dat1))
-            if dat is None:
-                dat=0
-            print(dat)
-            print("Here amount is "+str(stu_amount))
-            dat=dat+int(stu_amount)
-            print("data is ")
-            print(dat)
-            q2= 'UPDATE month SET {0} = ? WHERE Roll_number = ?'.format(mon)
-            p2=(dat,dat1)
-            cursor.execute(q2,p2)
-            conn.commit()
-            self.return_row(dat1)
-
+                print("hok")
+                print(mon)
+                q1='SELECT  '+ mon +' FROM month WHERE Roll_number=?'
+                p1=(dat1,)
+                cursor.execute(q1,p1)
+                name=cursor.fetchall()
+                out = [item for t in name for item in t]
+                dat=out[0]
+                print("Here is dat"+str(dat1))
+                if dat is None:
+                    dat=0
+                print(dat)
+                print("Here amount is "+str(stu_amount))
+                dat=dat+int(stu_amount)
+                print("data is ")
+                print(dat)
+                q2= 'UPDATE month SET {0} = ? WHERE Roll_number = ?'.format(mon)
+                p2=(dat,dat1)
+                cursor.execute(q2,p2)
+                conn.commit()
+                self.return_row(dat1)
+        except:
+            self.pop("Unable","Unable to add data.")
 
     ''' View Database Table'''
     def addp(self,name):
@@ -325,9 +327,9 @@ class School_Portal:
         with sqlite3.connect(self.db_name) as conn:
             cursor = conn.cursor()
             cursor.execute('''CREATE TABLE IF NOT EXISTS studentlist
-             ([Roll_number] INTEGER PRIMARY KEY,[Student_Name] text,[Student_Father_Name] text,[Student_Grandfather_Name] text,[Address] text,[Age] integer , [Contact] text,[Amount] integer)''')
+             ([Roll_number] TEXT PRIMARY KEY,[Student_Name] text,[Student_Father_Name] text,[Student_Grandfather_Name] text,[Address] text,[Age] integer , [Contact] text,[Amount] integer)''')
             cursor.execute('''CREATE TABLE IF NOT EXISTS month
-              ([Roll_number] INTEGER PRIMARY KEY,[Baisakh] integer,[Jestha] integer,[Ashad] integer, [Shrawan] integer,[Bhadra] integer,[Ashwin] integer,[Kartik] integer,[Mangsir] integer,[Poush] integer,[Magh] integer,[Falgun] integer,[Chaitra] integer,[Total] integer)''')
+              ([Roll_number] TEXT PRIMARY KEY,[Baisakh] integer,[Jestha] integer,[Ashad] integer, [Shrawan] integer,[Bhadra] integer,[Ashwin] integer,[Kartik] integer,[Mangsir] integer,[Poush] integer,[Magh] integer,[Falgun] integer,[Chaitra] integer,[Total] integer)''')
             query_result = cursor.execute(query, parameters)
             print("DONE")
             conn.commit()
@@ -552,7 +554,7 @@ class School_Portal:
         print("Hi")
         print(self.test12.get())
         #getting va;ue about  that money previously
-        value=self.return_sum(new_fname, new_father_name, new_grandfather_name, new_address, new_age,new_contact,new_amount,self.test12.get())
+        self.return_sum(new_fname, new_father_name, new_grandfather_name, new_address, new_age,new_contact,new_amount,self.test12.get())
         self.edit_root.destroy()
         self.message['text'] = '{} details are changed to {}'.format(fname, new_fname)
         self.veiwing_records()
