@@ -299,7 +299,7 @@ class School_Portal:
         desktop=desktop+str(self.username.get())+".png"
     #os.rename(name, desktop)
         shutil.copyfile(name, desktop)
-        self.message['text'] = 'Photo moved to'+desktop +' sucessfully.'
+        self.message['text'] = 'Photo copied to'+desktop +' sucessfully.'
     #os.replace(name, desktop)
     '''except:
         pop("Failed","Failed to move photo")'''
